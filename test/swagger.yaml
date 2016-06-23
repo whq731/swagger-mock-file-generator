@@ -1,0 +1,1763 @@
+swagger: '2.0'
+info:
+  title: DCRM API
+  description: DCRM API 接口文档
+  version: 1.0.0
+host: api.dc.tl.tpt.dev.sankuai.com
+schemes:
+  - http
+basePath: /
+produces:
+  - application/json
+paths:
+  /api/mis/info:
+    get:
+      summary: Product Types
+      description: |
+        查询mis信息
+      parameters:
+        - name: queryString
+          in: query
+          required: true
+          type: string
+          description: mis帐号/拼音/汉字
+      responses:
+        '200':
+          description: mis用户列表
+          schema:
+            $ref: '#/definitions/MisInfoResult'
+        default:
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/Result'
+  /api/cunrrutuser:
+    get:
+      summary: Product Types
+      description: |
+        获取当前登录用户
+      responses:
+        '200':
+          description: 当前登录用户
+          schema:
+            $ref: '#/definitions/dcrmUserResult'
+  /api/accountInfo/add:
+    post:
+      summary: 新增用户
+      description: |
+        新增用户
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: accountInfo
+          in: body
+          description: AccountInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newAccountInfo'
+      responses:
+        '200':
+          description: 结果
+          schema:
+            $ref: '#/definitions/Result'
+  /api/accountInfo/query:
+    get:
+      summary: 用户查询
+      description: 用户查询
+      parameters:
+        - name: accountName
+          in: query
+          description: 用户名
+          type: string
+        - name: mis
+          in: query
+          type: string
+        - name: rolesType
+          in: query
+          description: 角色类型（0：管理员，1：项目经理，2：观察员）
+          type: number
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountInfoResult'
+  /api/accountInfo/update:
+    post:
+      summary: 用户更新
+      description: 用户更新
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: accountInfo
+          in: body
+          description: AccountInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updateAccountInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountInfoResult'
+  /api/partnerInfo/add:
+    post:
+      summary: 添加合作商
+      description: 添加合作商
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: newPartnerInfo
+          in: body
+          description: partnerInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newPartnerInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnerInfo/query:
+    get:
+      summary: 合作商查询
+      description: 合作商查询
+      parameters:
+        - name: id
+          in: query
+          type: integer
+          format: int32
+          description: id
+        - name: partnerId
+          in: query
+          type: string
+          description: 合作方id
+        - name: accountId
+          in: query
+          type: integer
+          format: int32
+          description: 用户id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerInfoResult'
+  /api/partnerInfo/update:
+    post:
+      summary: 更新合作商信息
+      description: 更新合作商信息
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: updatePartnerInfo
+          in: body
+          description: updatePartnerInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updatePartnerInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/quotainfo/add:
+    post:
+      summary: 添加金字塔指标
+      description: 添加金字塔指标
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: newQuotaInfo
+          in: body
+          description: newQuotaInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newQuotaInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/quotainfo/update:
+    post:
+      summary: 更新金字塔指标
+      description: 更新金字塔指标
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: updateQuotaInfo
+          in: body
+          description: updateQuotaInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updateQuotaInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/quotainfo/query:
+    get:
+      summary: 金字塔指标查询
+      description: 金字塔指标查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/QuotaInfoResult'
+  /api/teaminfo/query:
+    get:
+      summary: 项目团队查询
+      description: 项目团队查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TeamInfoResult'
+  /api/teaminfo/add:
+    post:
+      summary: 项目团队添加
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: newTeamInfo
+          in: body
+          description: newTeamInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newTeamInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/teaminfo/update:
+    post:
+      summary: 项目团队更新
+      description: 项目团队更新
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: updateTeamInfo
+          in: body
+          description: updateTeamInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updateTeamInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnerbusinessinfo/query:
+    get:
+      summary: 客户供给侧信息查询
+      description: 客户供给侧信息查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerBusinessInfoResult'
+  /api/partnerbusinessinfo/add:
+    post:
+      summary: 客户供给侧信息添加
+      description: 客户供给侧信息添加
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: newPartnerBusinessInfo
+          in: body
+          description: newPartnerBusinessInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newPartnerBusinessInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnerbusinessinfo/update:
+    post:
+      summary: 客户供给侧信息编辑
+      description: 客户供给侧信息编辑
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: updatePartnerBusinessInfo
+          in: body
+          description: updatePartnerBusinessInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updatePartnerBusinessInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnercooperationinfo/query:
+    get:
+      summary: 客户特色及合作情况查询
+      description: 客户特色及合作情况查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerCooperationInfoResult'
+  /api/partnercooperationinfo/add:
+    post:
+      summary: 客户特色及合作情况添加
+      description: 客户特色及合作情况添加
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: newPartnerCooperationInfo
+          in: body
+          description: newPartnerCooperationInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newPartnerCooperationInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnercooperationinfo/update:
+    post:
+      summary: 客户特色及合作情况更新
+      description: 客户特色及合作情况更新
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: updatePartnerCooperationInfo
+          in: body
+          description: updatePartnerCooperationInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updatePartnerCooperationInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnercontractinfo/query:
+    get:
+      summary: 合同协议查询
+      description: 合同协议查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerContractInfoResult'
+  /api/uploadFile:
+    post:
+      summary: 文件上传
+      description: 文件上传
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: partnerId
+          in: formData
+          description: 合作方id
+          type: string
+          required: true
+        - name: uploadSrc
+          in: formData
+          description: 上传来源页面  0 客户组织结构  1 协议合同
+          type: integer
+          format: int32
+          required: true
+        - name: fileName
+          in: formData
+          type: string
+          description: 原文件名，非空时表示更新
+        - name: file
+          in: formData
+          type: file
+          description: 文件
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/fileInfoResult'
+  /api/download:
+    get:
+      summary: 文件下载
+      description: 文件下载
+      consumes:
+        - application/octet-stream
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+        - name: uploadSrc
+          in: query
+          description: 上传来源页面  0 客户组织结构  1 协议合同
+          type: integer
+          format: int32
+          required: true
+        - name: fileName
+          in: query
+          type: string
+          description: 原文件名，非空时表示更新
+      responses:
+        '200':
+          description: OK
+  /api/partnernewsinfo/query:
+    get:
+      summary: 大事记查询
+      description: 大事记查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerNewsInfoResult'
+  /api/partnernewsinfo/add:
+    post:
+      summary: 大事记添加
+      description: 大事记添加
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: newPartnerNewsInfo
+          in: body
+          description: newPartnerNewsInfo to add to the store
+          required: true
+          schema:
+            $ref: '#/definitions/newPartnerNewsInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnernewsinfo/update:
+    post:
+      summary: 大事记变更
+      description: 大事记变更
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: updatePartnerNewsInfo
+          in: body
+          description: updatePartnerNewsInfo to update to the store
+          required: true
+          schema:
+            $ref: '#/definitions/updatePartnerNewsInfo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnerinterviewinfo/query:
+    get:
+      summary: 合作方拜访记录查询
+      description: 合作方拜访记录查询
+      parameters:
+        - name: partnerId
+          in: query
+          description: 合作方id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerInterviewInfoResult'
+  /api/partnerinterviewinfo/add:
+    post:
+      summary: 合作方拜访记录增加
+      description: 合作方拜访记录增加
+      parameters:
+        - name: newPartnerInterviewInfo
+          in: body
+          description: The newPartnerInterviewInfo JSON you want to post
+          schema:
+            $ref: '#/definitions/newPartnerInterviewInfo'
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/partnerinterviewinfo/update:
+    post:
+      summary: 合作方拜访记录更新
+      description: 合作方拜访记录更新
+      parameters:
+        - name: updatePartnerInterviewInfo
+          in: body
+          description: The updatePartnerInterviewInfo JSON you want to post
+          schema:
+            $ref: '#/definitions/updatePartnerInterviewInfo'
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Result'
+  /api/updaterecordinfo/query:
+    get:
+      summary: 变更记录查询
+      description: 变更记录查询
+      parameters:
+        - name: srcPage
+          in: query
+          description: 来源页面 （team 表示整体进展  person 表示个人进展）
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UpdateRecordInfoResult'
+  /api/personprogress/query:
+    get:
+      summary: 个人进展查询
+      description: 个人进展查询
+      parameters:
+        - name: pageNum
+          in: query
+          type: integer
+          format: int32
+          description: 页码，默认为1
+        - name: pageSize
+          in: query
+          type: integer
+          format: int32
+          description: 页大小，默认13
+        - name: timeType
+          in: query
+          type: integer
+          format: int32
+          description: 0 按周查询  1 按月查询
+          required: true
+        - name: beginTime
+          in: query
+          description: 开始时间 （yyyy-MM-dd）
+          type: string
+        - name: endTime
+          in: query
+          description: 结束时间 （yyyy-MM-dd）
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PersonProgressResult'
+  /api/teamprogress/query:
+    get:
+      summary: 整体项目进展汇总 （个人进展）
+      description: 团队进展查询（需要管理员角色）   分页仅表示每个数据表里的数据
+      parameters:
+        - name: pageNum
+          in: query
+          type: integer
+          format: int32
+          description: 页码，默认为1
+        - name: pageSize
+          in: query
+          type: integer
+          format: int32
+          description: 页大小，默认13
+        - name: timeType
+          in: query
+          type: integer
+          format: int32
+          description: 0 按周查询  1 按月查询
+          required: true
+        - name: beginTime
+          in: query
+          description: 开始时间 （yyyy-MM-dd）
+          type: string
+        - name: endTime
+          in: query
+          description: 结束时间 （yyyy-MM-dd）
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TeamProgressResult'
+  /api/partnerprogress/query:
+    get:
+      summary: 项目进展查询
+      description: 项目进展查询
+      parameters:
+        - name: srcPage
+          in: query
+          description: 来源页面 （team 表示整体进展  person 表示个人进展）
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PartnerProgressResult'
+definitions:
+  MisInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: 主键
+      login:
+        type: string
+        description: 登录名
+      name:
+        type: string
+        description: 用户名
+  AccountInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: 主键
+      accountName:
+        type: string
+        description: 用户名
+      mis:
+        type: string
+        description: mis帐号
+      rolesType:
+        type: integer
+        format: int32
+        description: 角色类型（0：管理员，1：项目经理，2：观察员）
+      accountStatus:
+        type: integer
+        format: int32
+        description: 用户状态（0：停用，1：启用）
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  newAccountInfo:
+    type: object
+    required:
+      - accountName
+      - mis
+      - rolesType
+    properties:
+      accountName:
+        type: string
+        description: 用户名
+      mis:
+        type: string
+        description: mis帐号
+      rolesType:
+        type: integer
+        format: int32
+        description: 角色类型（0：管理员，1：项目经理，2：观察员）
+  updateAccountInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: 主键
+      accountName:
+        type: string
+        description: 用户名
+      mis:
+        type: string
+        description: mis帐号
+      rolesType:
+        type: integer
+        format: int32
+        description: 角色类型（0：管理员，1：项目经理，2：观察员）
+      accountStatus:
+        type: integer
+        format: int32
+        description: 用户状态（0：停用，1：启用）
+  PartnerInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: 主键
+      partnerId:
+        type: string
+        description: 合作方id
+      partnerName:
+        type: string
+        description: 合作方名称
+      managerAccountId:
+        type: integer
+        format: int32
+        description: 项目经理的用户id
+      managerName:
+        type: string
+        description: 项目经理的用户名
+      observersAccountId:
+        type: integer
+        format: int32
+        description: 观察员的用户id
+      observersName:
+        type: string
+        description: 观察员的用户用户名
+      partnerStatus:
+        type: integer
+        format: int32
+        description: 合作方状态（0：停止维护，1：维护中）
+      partnerCooperationStatus:
+        type: string
+        description: 合作方项目合作状态，可存在多个 (0：初步拜访沟通、    1：签署战略合作、2：建立高层联系、3：使用景区通).
+      partnerOrganizationChartName:
+        type: string
+        description: 合作方组织结构图文件名 （下载时传此名字）
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+      partTime:
+        type: string
+        description: 维护时长
+  newPartnerInfo:
+    type: object
+    required:
+      - partnerName
+    properties:
+      partnerName:
+        type: string
+        description: 合作方名称
+      managerAccountId:
+        type: integer
+        format: int32
+        description: 项目经理的用户id
+      observersAccountId:
+        type: integer
+        format: int32
+        description: 观察员的用户id
+  updatePartnerInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: 主键
+      partnerId:
+        type: string
+        description: 合作方id
+      partnerName:
+        type: string
+        description: 合作方名称
+      managerAccountId:
+        type: integer
+        format: int32
+        description: 项目经理的用户id
+      observersAccountId:
+        type: integer
+        format: int32
+        description: 观察员的用户id
+      partnerStatus:
+        type: integer
+        format: int32
+        description: 合作方状态（0：停止维护，1：维护中）
+      partnerCooperationStatus:
+        type: string
+        description: '合作方项目合作状态，可存在多个 (0：初步拜访沟通、    1：签署战略合作、2：建立高层联系、3：使用景区通),多个时，用逗号分隔.'
+      partnerOrganizationChartName:
+        type: string
+        description: 合作方组织结构图文件名
+      partnerOrganizationChartUrl:
+        type: string
+        description: 合作方组织结构图文件地址
+  Result:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: string
+  MisInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/MisInfo'
+  AccountInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/AccountInfo'
+  PartnerInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerInfo'
+  QuotaInfo:
+    type: object
+    properties:
+      id:
+        type: string
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      year:
+        type: integer
+        format: int32
+        description: 年份
+      overallTurnover:
+        type: string
+        description: 整体交易额
+      onlineTurnover:
+        type: string
+        description: 线上交易额
+      onlineTurnoverPt:
+        type: string
+        description: 线上交易额占比
+      xmdTurnover:
+        type: string
+        description: 新美大交易额
+      xmdTurnoverPt:
+        type: string
+        description: 新美大交易额占比
+      overallTradeVisitors:
+        type: string
+        description: 整体交易人次
+      onlineTradeVisitors:
+        type: string
+        description: 线上交易人次
+      onlineTradeVisitorsPt:
+        type: string
+        description: 线上交易人次占比
+      xmdTradeVisitors:
+        type: string
+        description: 新美大交易人次
+      xmdTradeVisitorsPt:
+        type: string
+        description: 新美大交易人次占比
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  newQuotaInfo:
+    type: object
+    required:
+      - partnerId
+      - year
+    properties:
+      partnerId:
+        type: string
+        description: 合作方id
+      year:
+        type: integer
+        format: int32
+        description: 年份
+      overallTurnover:
+        type: string
+        description: 整体交易额
+      onlineTurnover:
+        type: string
+        description: 线上交易额
+      onlineTurnoverPt:
+        type: string
+        description: 线上交易额占比
+      xmdTurnover:
+        type: string
+        description: 新美大交易额
+      xmdTurnoverPt:
+        type: string
+        description: 新美大交易额占比
+      overallTradeVisitors:
+        type: string
+        description: 整体交易人次
+      onlineTradeVisitors:
+        type: string
+        description: 线上交易人次
+      onlineTradeVisitorsPt:
+        type: string
+        description: 线上交易人次占比
+      xmdTradeVisitors:
+        type: string
+        description: 新美大交易人次
+      xmdTradeVisitorsPt:
+        type: string
+        description: 新美大交易人次占比
+  updateQuotaInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      year:
+        type: integer
+        format: int32
+        description: 年份
+      overallTurnover:
+        type: string
+        description: 整体交易额
+      onlineTurnover:
+        type: string
+        description: 线上交易额
+      onlineTurnoverPt:
+        type: string
+        description: 线上交易额占比
+      xmdTurnover:
+        type: string
+        description: 新美大交易额
+      xmdTurnoverPt:
+        type: string
+        description: 新美大交易额占比
+      overallTradeVisitors:
+        type: string
+        description: 整体交易人次
+      onlineTradeVisitors:
+        type: string
+        description: 线上交易人次
+      onlineTradeVisitorsPt:
+        type: string
+        description: 线上交易人次占比
+      xmdTradeVisitors:
+        type: string
+        description: 新美大交易人次
+      xmdTradeVisitorsPt:
+        type: string
+        description: 新美大交易人次占比
+  QuotaInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/QuotaInfo'
+  TeamInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      teamType:
+        type: integer
+        format: int32
+        description: 团队名称（0：客户团队，1：新美大团队）
+      userName:
+        type: string
+        description: 姓名
+      position:
+        type: string
+        description: 职位
+      responsibility:
+        type: string
+        description: 负责事项
+      phone:
+        type: string
+        description: 手机号
+      weixin:
+        type: string
+        description: 微信号
+      email:
+        type: string
+        description: 邮箱
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  TeaminfoType:
+    type: object
+    properties:
+      teamType:
+        type: integer
+        format: int32
+        description: 团队名称（0：客户团队，1：新美大团队）
+      teamList:
+        type: array
+        items:
+          $ref: '#/definitions/TeamInfo'
+  TeamInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/TeaminfoType'
+  newTeamInfo:
+    type: object
+    required:
+      - partnerId
+      - teamType
+      - userName
+    properties:
+      partnerId:
+        type: string
+        description: 合作方id
+      teamType:
+        type: integer
+        format: int32
+        description: 团队名称（0：客户团队，1：新美大团队）
+      userName:
+        type: string
+        description: 姓名
+      position:
+        type: string
+        description: 职位
+      responsibility:
+        type: string
+        description: 负责事项
+      phone:
+        type: string
+        description: 手机号
+      weixin:
+        type: string
+        description: 微信号
+      email:
+        type: string
+        description: 邮箱
+  updateTeamInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      teamType:
+        type: integer
+        format: int32
+        description: 团队名称（0：客户团队，1：新美大团队）
+      userName:
+        type: string
+        description: 姓名
+      position:
+        type: string
+        description: 职位
+      responsibility:
+        type: string
+        description: 负责事项
+      phone:
+        type: string
+        description: 手机号
+      weixin:
+        type: string
+        description: 微信号
+      email:
+        type: string
+        description: 邮箱
+  PartnerBusinessInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      businessType:
+        type: string
+        description: 业务种类
+      businessCnt:
+        type: integer
+        format: int32
+        description: 业务数量
+      businessInfo:
+        type: string
+        description: 业务说明
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  PartnerBusinessInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerBusinessInfo'
+  newPartnerBusinessInfo:
+    type: object
+    required:
+      - partnerId
+    properties:
+      partnerId:
+        type: string
+        description: 合作方id
+      businessType:
+        type: string
+        description: 业务种类
+      businessCnt:
+        type: integer
+        format: int32
+        description: 业务数量
+      businessInfo:
+        type: string
+        description: 业务说明
+  updatePartnerBusinessInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      businessType:
+        type: string
+        description: 业务种类
+      businessCnt:
+        type: integer
+        format: int32
+        description: 业务数量
+      businessInfo:
+        type: string
+        description: 业务说明
+  PartnerCooperationInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      cooperationType:
+        type: integer
+        format: int32
+        description: 客户特色及合作情况分类 0：业务合作情况，1：景区通合作情况，2：客户情况综述
+      cooperationInfo:
+        type: string
+        description: 合作情况说明
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  newPartnerCooperationInfo:
+    type: object
+    required:
+      - partnerId
+      - cooperationType
+      - cooperationInfo
+    properties:
+      partnerId:
+        type: string
+        description: 合作方id
+      cooperationType:
+        type: integer
+        format: int32
+        description: 客户特色及合作情况分类 0：业务合作情况，1：景区通合作情况，2：客户情况综述
+      cooperationInfo:
+        type: string
+        description: 合作情况说明
+  updatePartnerCooperationInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      cooperationType:
+        type: integer
+        format: int32
+        description: 客户特色及合作情况分类 0：业务合作情况，1：景区通合作情况，2：客户情况综述
+      cooperationInfo:
+        type: string
+        description: 合作情况说明
+  PartnerCooperationInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerCooperationInfo'
+  PartnerContractInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      contractName:
+        type: string
+        description: 合同文件名
+      contractUrl:
+        type: string
+        description: 合同文件地址
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  PartnerContractInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerContractInfo'
+  PartnerNewsInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      newsTitle:
+        type: string
+        description: 大事件标题
+      newsTime:
+        type: string
+        description: 大事件发生时间
+      newsUrl:
+        type: string
+        description: 大事件URL
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  newPartnerNewsInfo:
+    type: object
+    required:
+      - partnerId
+      - newsTitle
+      - newsTime
+      - newsUrl
+    properties:
+      partnerId:
+        type: string
+        description: 合作方id
+      newsTitle:
+        type: string
+        description: 大事件标题
+      newsTime:
+        type: string
+        description: 大事件发生时间
+      newsUrl:
+        type: string
+        description: 大事件URL
+  updatePartnerNewsInfo:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      newsTitle:
+        type: string
+        description: 大事件标题
+      newsTime:
+        type: string
+        description: 大事件发生时间
+      newsUrl:
+        type: string
+        description: 大事件URL
+  PartnerNewsInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerNewsInfo'
+  PartnerInterviewInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      partnerId:
+        type: string
+        description: 合作方id
+      interviewCnt:
+        type: string
+        description: 拜访序数
+      interviewTime:
+        type: string
+        description: 会面时间
+      interviewLoc:
+        type: string
+        description: 会面地点
+      meetingMinutes:
+        type: string
+        description: 会面纪要
+      interviewInfo:
+        type: string
+        description: 了解信息
+      persons:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerInterviewPersonnelInfo'
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  newPartnerInterviewInfo:
+    type: object
+    required:
+      - partnerId
+      - meetingMinutes
+      - interviewInfo
+      - interviewLoc
+      - interviewTime
+    properties:
+      partnerId:
+        type: string
+        description: 合作方id
+      interviewTime:
+        type: string
+        description: 会面时间
+      interviewLoc:
+        type: string
+        description: 会面地点
+      meetingMinutes:
+        type: string
+        description: 会面纪要
+      interviewInfo:
+        type: string
+        description: 了解信息
+      persons:
+        description: 参与人所属公司（companyType）至少每个类型一条
+        type: array
+        items:
+          $ref: '#/definitions/newPartnerInterviewPersonnelInfo'
+  newPartnerInterviewPersonnelInfo:
+    type: object
+    required:
+      - companyType
+      - position
+      - userName
+    properties:
+      companyType:
+        type: integer
+        format: int32
+        description: 参与人所属公司（0：对方，1：我方）
+      position:
+        type: string
+        description: 参与人职务名称
+      userName:
+        type: string
+        description: 参与人姓名
+  updatePartnerInterviewInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      interviewTime:
+        type: string
+        description: 会面时间
+      interviewLoc:
+        type: string
+        description: 会面地点
+      meetingMinutes:
+        type: string
+        description: 会面纪要
+      interviewInfo:
+        type: string
+        description: 了解信息
+      persons:
+        description: 参与人所属公司（companyType）至少每个类型一条
+        type: array
+        items:
+          $ref: '#/definitions/newPartnerInterviewPersonnelInfo'
+  PartnerInterviewPersonnelInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id
+      interviewId:
+        type: integer
+        format: int32
+        description: 拜访id
+      companyType:
+        type: integer
+        format: int32
+        description: 参与人所属公司（0：对方，1：我方）
+      position:
+        type: string
+        description: 参与人职务名称
+      userName:
+        type: string
+        description: 参与人姓名
+      createTime:
+        type: string
+        description: 创建时间
+      updateTime:
+        type: string
+        description: 更新时间
+  PartnerInterviewInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerInterviewInfo'
+  UpdateRecordInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          type: string
+          description: 更新记录
+  PartnerProgress:
+    type: object
+    properties:
+      partnerId:
+        type: string
+        description: 项目编号
+      partnerName:
+        type: string
+        description: 合作方名称
+      managerName:
+        type: string
+        description: 项目经理
+      partnerStatus:
+        type: integer
+        format: int32
+        description: 合作方状态（0：停止维护，1：维护中）
+      partnerCooperationStatus:
+        type: string
+        description: 合作方项目合作状态，可存在多个 (0：初步拜访沟通、    1：签署战略合作、2：建立高层联系、3：使用景区通).
+      createTime:
+        type: string
+        description: 创建时间
+      partnerTime:
+        type: string
+        description: 维护时长
+      infoPercent:
+        type: string
+        description: 信息完整度
+  PartnerProgressResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PartnerProgress'
+  PersonProgressRowVal:
+    description: 个人进展中列中的值
+    type: object
+    properties:
+      name:
+        type: string
+        description: 第一列名字
+      newsInfo:
+        type: integer
+        format: int32
+        description: 大事记数量
+      interviewInfo:
+        type: integer
+        format: int32
+        description: 拜访记录数量
+      basicInfo:
+        type: integer
+        format: int32
+        description: 基本信息数量
+  PersonProgressResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/PersonProgressRowVal'
+  TeamProgress:
+    description: 团队进展
+    type: object
+    properties:
+      tableName:
+        type: string
+        description: 表名
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/TeamProgressRowVal'
+  TeamProgressRowVal:
+    description: 个人进展中行的值
+    type: object
+    properties:
+      name:
+        type: string
+        description: 第一列名字
+      newsInfo:
+        type: integer
+        format: int32
+        description: 大事记数量
+      interviewInfo:
+        type: integer
+        format: int32
+        description: 拜访记录数量
+      basicInfo:
+        type: integer
+        format: int32
+        description: 基本信息数量
+  TeamProgressResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/TeamProgress'
+  dcrmUser:
+    type: object
+    properties:
+      rolesType:
+        type: integer
+        format: int32
+        description: 当前用户角色类型
+      accountId:
+        type: integer
+        format: int32
+        description: 当前用户id
+      accountStatus:
+        type: integer
+        format: int32
+        description: 0：停用，1：启用
+      user:
+        $ref: '#/definitions/User'
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: 当前用户角mis id
+      login:
+        type: string
+        description: mis 帐号
+      name:
+        type: string
+        description: 用户名
+      roles:
+        type: array
+        items:
+          type: string
+          description: upm角色
+  dcrmUserResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        $ref: '#/definitions/dcrmUser'
+  fileInfo:
+    type: object
+    properties:
+      partnerId:
+        type: string
+        description: 项目编号
+      uploadSrc:
+        type: integer
+        format: int32
+        description: 上传来源页面 0 客户组织结构 1 协议合同
+      fileName:
+        type: string
+        description: 文件名
+  fileInfoResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 非0都是非正常
+      message:
+        type: string
+      data:
+        $ref: '#/definitions/fileInfo'
