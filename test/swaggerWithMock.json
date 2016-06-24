@@ -64,13 +64,13 @@
                 }
               },
               "example": {
-                "code": 801781827239937,
-                "message": "O[R%XWsN8f1BffB!U",
+                "code": 0,
+                "message": "成功",
                 "data": [
                   {
-                    "id": -5764211741294591,
-                    "login": "vW0mlc",
-                    "name": "w^]UrfVXYpiMB"
+                    "id": 1234,
+                    "login": "weihanqing",
+                    "name": "魏汉清"
                   },
                   {
                     "id": 6415711236784129,

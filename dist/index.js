@@ -31,9 +31,7 @@ exports['default'] = function (swaggerFile, mockFile) {
             resolve(api);
         });
     });
-
     parserPromise.then(function (api) {
-
         var paths = api.paths;
         for (var path in paths) {
             if (paths.hasOwnProperty(path)) {
@@ -43,7 +41,12 @@ exports['default'] = function (swaggerFile, mockFile) {
                             for (var resCode in paths[path][action].responses) {
                                 if (paths[path][action].responses.hasOwnProperty(resCode)) {
                                     if (paths[path][action].responses[resCode].schema) {
-                                        paths[path][action].responses[resCode].schema.example = new _swaggerMockParser2['default']().parse(paths[path][action].responses[resCode].schema);
+                                        // if example is defined ,on override just skip it
+                                        if (paths[path][action].responses[resCode].schema.example) {
+                                            continue;
+                                        } else {
+                                            paths[path][action].responses[resCode].schema.example = new _swaggerMockParser2['default']().parse(paths[path][action].responses[resCode].schema);
+                                        }
                                     }
                                 }
                             }

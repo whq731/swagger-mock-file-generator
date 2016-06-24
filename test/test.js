@@ -1,2 +1,2 @@
 var parser = require('../dist/index');
-parser('swagger.yaml')
+parser('./swagger.yaml','./swaggerWithMock.json');
