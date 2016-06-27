@@ -1,12 +1,13 @@
 import fs from 'fs'
 import swaggerParser from 'swagger-parser';
-import mockParser from 'swagger-mock-parser'
+import mockParser from 'swagger-mock-parser';
+import 'babel-polyfill';
 
 export default function(swaggerFile, mockFile, cb) {
   if (!swaggerFile) {
     throw new Error('missing swagger file path');
   }
-
+let parser = new mockParser();
 let parserPromise = new Promise((resolve) => {
 	swaggerParser.dereference(swaggerFile, function(err, api) {
 	  if (err) throw err;
@@ -27,7 +28,7 @@ parserPromise.then((api) => {
                                     if(paths[path][action].responses[resCode].schema.example){
                                         continue;
                                     } else {
-                                        paths[path][action].responses[resCode].schema.example = new mockParser().parse(paths[path][action].responses[resCode].schema)
+                                        paths[path][action].responses[resCode].schema.example = parser.parse(paths[path][action].responses[resCode].schema)
                                     }
                                 }
                             }
@@ -38,7 +39,10 @@ parserPromise.then((api) => {
             }
         }
     };
-    fs.writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2) , 'utf-8', cb);
+    fs.writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2) , 'utf-8', (err) =>{
+        if(err) throw err;
+        if(cb) cb();
+    });
 });
 
 };

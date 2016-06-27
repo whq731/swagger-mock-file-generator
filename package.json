@@ -1,6 +1,6 @@
 {
   "name": "swagger-mock-file-generator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A generator of mock file base on swagger yaml or JSON",
   "main": "dist/index",
   "scripts": {
@@ -16,6 +16,7 @@
     "chancejs"
   ],
   "dependencies": {
+    "babel-polyfill": "^6.9.1",
     "babel-runtime": "^5.5.6",
     "swagger-mock-parser": "^1.0.4",
     "swagger-parser": "^3.4.1"

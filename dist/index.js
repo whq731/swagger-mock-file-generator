@@ -20,11 +20,13 @@ var _swaggerMockParser = require('swagger-mock-parser');
 
 var _swaggerMockParser2 = _interopRequireDefault(_swaggerMockParser);
 
+require('babel-polyfill');
+
 exports['default'] = function (swaggerFile, mockFile, cb) {
     if (!swaggerFile) {
         throw new Error('missing swagger file path');
     }
-
+    var parser = new _swaggerMockParser2['default']();
     var parserPromise = new _Promise(function (resolve) {
         _swaggerParser2['default'].dereference(swaggerFile, function (err, api) {
             if (err) throw err;
@@ -45,7 +47,7 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
                                         if (paths[path][action].responses[resCode].schema.example) {
                                             continue;
                                         } else {
-                                            paths[path][action].responses[resCode].schema.example = new _swaggerMockParser2['default']().parse(paths[path][action].responses[resCode].schema);
+                                            paths[path][action].responses[resCode].schema.example = parser.parse(paths[path][action].responses[resCode].schema);
                                         }
                                     }
                                 }
@@ -55,7 +57,10 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
                 }
             }
         };
-        _fs2['default'].writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2), 'utf-8', cb);
+        _fs2['default'].writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2), 'utf-8', function (err) {
+            if (err) throw err;
+            if (cb) cb();
+        });
     });
 };
 
