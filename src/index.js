@@ -2,7 +2,7 @@ import fs from 'fs'
 import swaggerParser from 'swagger-parser';
 import mockParser from 'swagger-mock-parser'
 
-export default function(swaggerFile, mockFile) {
+export default function(swaggerFile, mockFile, cb) {
   if (!swaggerFile) {
     throw new Error('missing swagger file path');
   }
@@ -38,7 +38,7 @@ parserPromise.then((api) => {
             }
         }
     };
-    fs.writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2) , 'utf-8');
+    fs.writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2) , 'utf-8', cb);
 });
 
 };

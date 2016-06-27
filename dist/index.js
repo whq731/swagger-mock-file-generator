@@ -20,7 +20,7 @@ var _swaggerMockParser = require('swagger-mock-parser');
 
 var _swaggerMockParser2 = _interopRequireDefault(_swaggerMockParser);
 
-exports['default'] = function (swaggerFile, mockFile) {
+exports['default'] = function (swaggerFile, mockFile, cb) {
     if (!swaggerFile) {
         throw new Error('missing swagger file path');
     }
@@ -55,7 +55,7 @@ exports['default'] = function (swaggerFile, mockFile) {
                 }
             }
         };
-        _fs2['default'].writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2), 'utf-8');
+        _fs2['default'].writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2), 'utf-8', cb);
     });
 };
 
