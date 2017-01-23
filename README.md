@@ -15,3 +15,6 @@ parser('./swagger.yaml','./swaggerWithMock.json', function(){
 });
 
 ````
+This mocked file supports https://github.com/whq731/swagger-express-middleware-with-chance or https://github.com/BigstickCarpet/swagger-express-middleware
+Free to choose! 
+

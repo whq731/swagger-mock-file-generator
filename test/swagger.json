@@ -1,0 +1,6603 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "本文档和代码同步更新，建议优先(于wiki)参考",
+    "version" : "v1",
+    "title" : "美团旅游TDC后端API",
+    "termsOfService" : "http://www.meituan.com",
+    "contact" : {
+      "name" : "方超",
+      "email" : "fangchao04@meituan.com"
+    }
+  },
+  "basePath" : "/thames",
+  "tags" : [ {
+    "name" : "景点POI接口"
+  }, {
+    "name" : "新票型"
+  }, {
+    "name" : "标签类别工作台"
+  }, {
+    "name" : "城市基本接口"
+  }, {
+    "name" : "标签页面菜单"
+  }, {
+    "name" : "标签工作台"
+  }, {
+    "name" : "门票基本接口"
+  }, {
+    "name" : "城市标签接口"
+  }, {
+    "name" : "绩效考核景区"
+  }, {
+    "name" : "支援目的地(兄弟部门)区域接口"
+  }, {
+    "name" : "out"
+  }, {
+    "name" : "购物点基本接口Controller"
+  }, {
+    "name" : "标签类别"
+  }, {
+    "name" : "POI白名单接口"
+  }, {
+    "name" : "标签"
+  }, {
+    "name" : "POI词表"
+  } ],
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/front/city/v1/get/cityids" : {
+      "get" : {
+        "tags" : [ "out" ],
+        "summary" : "根据省份查询开站城市ID",
+        "description" : "传入一个或多个省份名称",
+        "operationId" : "getCityIdByProvinceNames",
+        "parameters" : [ {
+          "name" : "provinceName",
+          "in" : "query",
+          "description" : "省份名称",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/gis/v1/areas" : {
+      "get" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "商圈列表",
+        "description" : "缺省",
+        "operationId" : "getAreaList",
+        "parameters" : [ {
+          "name" : "pageNo",
+          "in" : "query",
+          "description" : "页码NO,值大于等于1",
+          "required" : false,
+          "type" : "integer",
+          "default" : "1",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页Size,值大于等于1",
+          "required" : false,
+          "type" : "integer",
+          "default" : "20",
+          "format" : "int32"
+        }, {
+          "name" : "destinationId",
+          "in" : "query",
+          "description" : "目的地Id,默认查全部",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "areaName",
+          "in" : "query",
+          "description" : "商圈名称,默认查全部",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "排序字段,默认按照id排序",
+          "required" : false,
+          "type" : "string",
+          "default" : "id"
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "排序顺序,默认升序asc",
+          "required" : false,
+          "type" : "string",
+          "default" : "asc"
+        }, {
+          "name" : "mark",
+          "in" : "query",
+          "description" : "是否标注,默认全部",
+          "required" : false,
+          "type" : "string",
+          "default" : "false"
+        }, {
+          "name" : "areaId",
+          "in" : "query",
+          "description" : "商圈Id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "accurateQuery",
+          "in" : "query",
+          "description" : "是否精确查询",
+          "required" : false,
+          "type" : "string",
+          "default" : "false"
+        }, {
+          "name" : "destinationFilter",
+          "in" : "query",
+          "description" : "是否过滤目的地区域",
+          "required" : false,
+          "type" : "string",
+          "default" : "true"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/AreaRespList"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "新建区域",
+        "description" : "缺省",
+        "operationId" : "addArea",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/AreaVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/AreaResp"
+            }
+          }
+        }
+      }
+    },
+    "/gis/v1/areas/{areaId}" : {
+      "get" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "商圈详情",
+        "description" : "缺省",
+        "operationId" : "getArea",
+        "parameters" : [ {
+          "name" : "areaId",
+          "in" : "path",
+          "description" : "商圈ID",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/AreaResp"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "更新商圈",
+        "description" : "缺省",
+        "operationId" : "updateArea",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/AreaVO"
+          }
+        }, {
+          "name" : "areaId",
+          "in" : "path",
+          "description" : "商圈ID",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BooleanResp"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "删除区域",
+        "description" : "通过areaId",
+        "operationId" : "delArea",
+        "parameters" : [ {
+          "name" : "areaId",
+          "in" : "path",
+          "description" : "区域Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BooleanResp"
+            }
+          }
+        }
+      }
+    },
+    "/gis/v1/destinations" : {
+      "get" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "查询目的地",
+        "description" : "模糊查询目的地信息",
+        "operationId" : "getDestList",
+        "parameters" : [ {
+          "name" : "destinationName",
+          "in" : "query",
+          "description" : "目的地名称",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DestinationListResp"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "创建目的地",
+        "description" : "缺省",
+        "operationId" : "addDest",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "destinationVO",
+          "description" : "目的地对象",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/DestinationVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DestinationResp"
+            }
+          }
+        }
+      }
+    },
+    "/gis/v1/destinations/summary" : {
+      "get" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "根据目的地和编辑状态查询区域信息，默认查询所有目的地中全部区域信息",
+        "description" : "编辑状态中，默认为全部,待编辑(值为0),已编辑(值为1); 在选择目的地中，默认为所有目的地",
+        "operationId" : "getDestAreaInfo",
+        "parameters" : [ {
+          "name" : "pageNo",
+          "in" : "query",
+          "description" : "当前页码",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页大小",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "areaStatus",
+          "in" : "query",
+          "description" : "编辑状态",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "destinationId",
+          "in" : "query",
+          "description" : "目的地Id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DestinationAreaInfoSummary"
+            }
+          }
+        }
+      }
+    },
+    "/gis/v1/destinations/{destinationId}" : {
+      "get" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "目的地详情",
+        "description" : "缺省",
+        "operationId" : "getDest",
+        "parameters" : [ {
+          "name" : "destinationId",
+          "in" : "path",
+          "description" : "目的地Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DestinationResp"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "更新目的地",
+        "description" : "缺省",
+        "operationId" : "updateDest",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/DestinationVO"
+          }
+        }, {
+          "name" : "destinationId",
+          "in" : "path",
+          "description" : "目的地Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BooleanResp"
+            }
+          }
+        }
+      }
+    },
+    "/gis/v1/destinations/{destinationId}/pictures" : {
+      "get" : {
+        "tags" : [ "支援目的地(兄弟部门)区域接口" ],
+        "summary" : "根据destinationId查询目的地图片",
+        "description" : "通过destinationId",
+        "operationId" : "getDestinationImageDOByDestinationId",
+        "parameters" : [ {
+          "name" : "destinationId",
+          "in" : "path",
+          "description" : "目的地Id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DestinationImageInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/assess/trip/poi/info" : {
+      "get" : {
+        "tags" : [ "绩效考核景区" ],
+        "summary" : "分页获取绩效考核景区",
+        "description" : "缺省",
+        "operationId" : "getAssessTripPoiInfoByConditions",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "tripPoiName",
+          "description" : "模糊查询",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "body",
+          "name" : "provinceLocationId",
+          "description" : "省份id",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "body",
+          "name" : "cityLocationId",
+          "description" : "城市id",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "body",
+          "name" : "pageNo",
+          "description" : "页码",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "body",
+          "name" : "pageSize",
+          "description" : "显示的数量",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/AssessTripPoiResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/assess/trip/poi/info/ids" : {
+      "get" : {
+        "tags" : [ "绩效考核景区" ],
+        "summary" : "根据id查询景点绩效考核信息",
+        "description" : "缺省",
+        "operationId" : "getAssessTripPoiInfoByConditions",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "assessTripPoiIdList",
+          "description" : "id的list",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/AssessTripPoiResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/city/label/v1/get/cityinfo/labelids" : {
+      "get" : {
+        "tags" : [ "城市标签接口" ],
+        "summary" : "根据标签查询城市",
+        "description" : "可传多个标签ID",
+        "operationId" : "getCityInfoByLabelIds",
+        "parameters" : [ {
+          "name" : "labelIds",
+          "in" : "query",
+          "description" : "标签ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "pageNo",
+          "in" : "query",
+          "description" : "页数",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "显示条数",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/city/label/v1/get/lable/locationid" : {
+      "get" : {
+        "tags" : [ "城市标签接口" ],
+        "summary" : "根据locationId获取城市标签",
+        "description" : "根据locationId获取城市标签",
+        "operationId" : "geitLableInfoByLocationId",
+        "parameters" : [ {
+          "name" : "locationId",
+          "in" : "query",
+          "description" : "城市locationId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/linetravel/v1/line/travel/shopping/create" : {
+      "post" : {
+        "tags" : [ "购物点基本接口Controller" ],
+        "summary" : "创建购物点",
+        "description" : "创建购物点",
+        "operationId" : "createLineTravelShopping",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "购物点信息",
+          "description" : "购物点信息",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LineTravelShoppingCreateVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/linetravel/v1/line/travel/shopping/get/name" : {
+      "get" : {
+        "tags" : [ "购物点基本接口Controller" ],
+        "summary" : "购物点查询",
+        "description" : "购物点查询",
+        "operationId" : "searchLineTravelShoppingByName",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "description" : "购物点名字",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "cityId",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "soldContent",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "start",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v1/child/poi" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据{mdc poi id}查询子景点{mdc poi id}",
+        "description" : "无",
+        "operationId" : "getChildPoiInfoByMdcPoiIds",
+        "parameters" : [ {
+          "name" : "mdcPoiIds",
+          "in" : "query",
+          "description" : "以逗号隔开",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ChildPoiInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v1/parent/poi" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据{mdc poi id}查询父景点{mdc poi id}",
+        "description" : "无",
+        "operationId" : "getParentPoiInfoByMdcPoiIds",
+        "parameters" : [ {
+          "name" : "mdcPoiIds",
+          "in" : "query",
+          "description" : "以逗号隔开",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ParentPoiInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v1/poi" : {
+      "post" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "创建景点接口",
+        "description" : "无",
+        "operationId" : "createTdcPoi",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "replaceTripPoiVO",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ReplaceTripPoiVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/AuditTripPoiResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v2/get/desc/byId" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据MDC的poiId获取poi的简介",
+        "description" : "无",
+        "operationId" : "getPoiDescByMdcPoiId",
+        "parameters" : [ {
+          "name" : "mdcPoiId",
+          "in" : "query",
+          "description" : "mdcPoiId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v2/get/img/bytdcpoiid" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据TDC的poiId获取poi的图片",
+        "description" : "无",
+        "operationId" : "getImgByTdcPoiId",
+        "parameters" : [ {
+          "name" : "tdcPoiId",
+          "in" : "query",
+          "description" : "tdcPoiId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiImgResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v2/get/info" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据mdcPoiId获取景点信息",
+        "description" : "无",
+        "operationId" : "getTripPoiAllInfoByMdcPoiIds",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "景点的mdcPoiIdList",
+          "description" : "mdcPoiId用英文逗号隔开",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "body",
+          "name" : "需要显示的字段，不传则只返回mdcPoiId,tdcPoiId,mdcPoiName,传all表示显示所有字段",
+          "description" : "字段名称用英文逗号隔开",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiFullInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/poi/v2/get/poi/and/city/by/name" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据名称模糊查询poi和城市",
+        "description" : "根据名称模糊查询poi和城市",
+        "operationId" : "getTripPoiInfoAndCityInfoByName",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/PoiAndCityDataRes"
+            }
+          }
+        }
+      }
+    },
+    "/out/tag" : {
+      "get" : {
+        "tags" : [ "标签" ],
+        "summary" : "查看标签",
+        "description" : "什么也不传查看全部",
+        "operationId" : "getTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "标签ID:1,3,4",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "标签名称:田园风光",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "typeId",
+          "in" : "query",
+          "description" : "标签类别ID:1,包括所有子类别",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "businessScope",
+          "in" : "query",
+          "description" : "业务范围:1:POI,2:门票,4:跟团游,8:动态标签,16:景+酒",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagVOListResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/tag/category" : {
+      "get" : {
+        "tags" : [ "标签" ],
+        "summary" : "查看品类标签",
+        "description" : "什么也不传返回全部",
+        "operationId" : "getCategoryTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "标签ID:1,3,4",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/CategoryTagVOListResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/tag/common" : {
+      "get" : {
+        "tags" : [ "标签" ],
+        "summary" : "查看其他标签",
+        "description" : "什么也不传返回全部",
+        "operationId" : "getCommonTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "标签ID:1,3,4",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "标签名称:田园风光",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "typeId",
+          "in" : "query",
+          "description" : "标签类别ID:1,包括所有子类别",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "businessScope",
+          "in" : "query",
+          "description" : "业务范围:1:POI,2:门票,4:跟团游,8:动态标签",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/CommonTagVOListResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/tag/type" : {
+      "get" : {
+        "tags" : [ "标签类别" ],
+        "summary" : "查看标签类别",
+        "description" : "什么也不传返回全部",
+        "operationId" : "getCategoryTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "标签类别ID列表:1,2,3",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "标签名称",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagTypeVOListResp"
+            }
+          }
+        }
+      }
+    },
+    "/out/ticket/v1/sight/feeitem/create" : {
+      "post" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "创建消费项目",
+        "description" : "创建消费项目",
+        "operationId" : "createSightTicketFeeItem",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "创建消费项目参数",
+          "description" : "创建消费项目参数",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/FeeItemCreateVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/ticket/v1/sight/feeitem/update" : {
+      "post" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "修改消费项目",
+        "description" : "修改消费项目",
+        "operationId" : "updateSightTicketFeeItem",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "景点ID",
+          "description" : "景点ID",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/FeeItemUpdateVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/ticket/v1/sight/info/name" : {
+      "get" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "景点查询",
+        "description" : "景点查询",
+        "operationId" : "searchSightByName",
+        "parameters" : [ {
+          "name" : "sightname",
+          "in" : "query",
+          "description" : "景点名字",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "start",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pagesize",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/ticket/v1/type/create" : {
+      "post" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "创建票种",
+        "description" : "创建票种",
+        "operationId" : "createSightTicket",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "ticketCreateVO",
+          "description" : "景点ID",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/TicketCreateVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/ticket/v1/type/update" : {
+      "post" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "修改票种",
+        "description" : "修改票种",
+        "operationId" : "updateSightTicket",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "景点ID",
+          "description" : "景点ID",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/TicketUpdateVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/ticket/v2/sight/info/name" : {
+      "get" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "景点查询",
+        "description" : "景点查询",
+        "operationId" : "searchSightByNameOnES",
+        "parameters" : [ {
+          "name" : "sightname",
+          "in" : "query",
+          "description" : "景点名字",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "start",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pagesize",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WebResponse"
+            }
+          }
+        }
+      }
+    },
+    "/out/vcbl/get/info/by/online" : {
+      "get" : {
+        "tags" : [ "POI词表" ],
+        "summary" : "POI词表：根据ID查",
+        "description" : "酒店查询：根据ID查",
+        "operationId" : "getVocabularyByIsOnline",
+        "parameters" : [ {
+          "name" : "isOnline",
+          "in" : "query",
+          "description" : "是否在线,0表示不在线,1表示在线,2表示全部",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pageNo",
+          "in" : "query",
+          "description" : "页码，大于等于1",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "需要返回的页数",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/VocabularyPoiVOResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/mail" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "",
+        "description" : "无",
+        "operationId" : "exportMasterPoi",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ParentPoiInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/master/excel" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "随机获取主POI",
+        "description" : "无",
+        "operationId" : "exportMasterPoi",
+        "parameters" : [ {
+          "name" : "poiCount",
+          "in" : "query",
+          "description" : "数量,大于0，小于500",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "品类Id，以英文逗号隔开",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "templateName",
+          "in" : "query",
+          "description" : "需要传的表名",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ParentPoiInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/online/master/excel" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "随机获取在线主POI",
+        "description" : "无",
+        "operationId" : "exportOnlineMasterPoi",
+        "parameters" : [ {
+          "name" : "poiCount",
+          "in" : "query",
+          "description" : "数量,大于0，小于1000",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "品类Id，以英文逗号隔开",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "templateName",
+          "in" : "query",
+          "description" : "需要传的表名",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ParentPoiInfoResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/complete/task" : {
+      "post" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "景点校准完成接口",
+        "description" : "无",
+        "operationId" : "_deprecated_updatePoiWithsimilarOnes",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "updateTripPoiInfoVO",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ReplaceTripPoiVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/correct/data" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据TDC的poiId获取相似名称的POI",
+        "description" : "无",
+        "operationId" : "getPoiWithsimilarOnes",
+        "parameters" : [ {
+          "name" : "tdcPoiId",
+          "in" : "query",
+          "description" : "tdcPoiId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "accurateResult",
+          "in" : "query",
+          "description" : "accurateResult",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "isLvyouCate",
+          "in" : "query",
+          "description" : "isLvyouCate",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "isMaster",
+          "in" : "query",
+          "description" : "isMaster",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/PoiWithsimilarOnesResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/getallinfo/byid" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据TDC的poiId获取poi的信息",
+        "description" : "无",
+        "operationId" : "getTripPoiAllInfoById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoi4AuditResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/poi" : {
+      "put" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "景点更新接口",
+        "description" : "无",
+        "operationId" : "updatePoi",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "updateTripPoiInfoVO",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ReplaceTripPoiVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiBoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/poi/mergence" : {
+      "post" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "景点合并接口",
+        "description" : "无",
+        "operationId" : "mergePoi",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "poiMergence",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/PoiMergence"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiBoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/poi/{tdcPoiId}/tag" : {
+      "put" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "景点标签更新接口",
+        "description" : "无",
+        "operationId" : "updatePoiTag",
+        "parameters" : [ {
+          "name" : "TDC POI ID",
+          "in" : "path",
+          "description" : "tdcPoiId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "poiTagRelations",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PoiTagRelationVO"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiBoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/v2/poi_with_similars" : {
+      "get" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "根据TDC的poiId获取相似名称的POI",
+        "description" : "无",
+        "operationId" : "getPoiWithsimilarOnesWrapper",
+        "parameters" : [ {
+          "name" : "tdcPoiId",
+          "in" : "query",
+          "description" : "tdcPoiId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "accurateResult",
+          "in" : "query",
+          "description" : "accurateResult",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "isLvyouCate",
+          "in" : "query",
+          "description" : "isLvyouCate",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "isMaster",
+          "in" : "query",
+          "description" : "isMaster",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/PoiWithsimilarOnesResp"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "景点POI接口" ],
+        "summary" : "景点校准完成接口",
+        "description" : "无",
+        "operationId" : "updatePoiWithsimilarOnes",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "updateTripPoiInfoVO",
+          "description" : "json",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ReplaceTripPoiVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TripPoiBoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/poi/white/list" : {
+      "get" : {
+        "tags" : [ "POI白名单接口" ],
+        "summary" : "根据poiId、名字搜索白名单信息",
+        "description" : "无",
+        "operationId" : "searchPoiWhiteList",
+        "parameters" : [ {
+          "name" : "mdcPoiId",
+          "in" : "query",
+          "description" : "mdcPoiId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "poiName",
+          "in" : "query",
+          "description" : "poiName",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/PoiWhiteListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-tag/menu" : {
+      "get" : {
+        "tags" : [ "标签页面菜单" ],
+        "summary" : "TDC票型菜单",
+        "description" : "",
+        "operationId" : "getTdcMenu",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TdcMenuResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-tag/tag" : {
+      "get" : {
+        "tags" : [ "标签工作台" ],
+        "summary" : "查看标签",
+        "description" : "什么也不传查看全部",
+        "operationId" : "getTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "标签ID:1,3,4",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "标签名称:田园风光",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "typeId",
+          "in" : "query",
+          "description" : "标签类别ID:1,等值查询",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "businessScope",
+          "in" : "query",
+          "description" : "业务范围:1:POI,2:门票,4:跟团游,8:动态标签,16:景+酒",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "businessScopeList",
+          "in" : "query",
+          "description" : "业务范围List:[{\"code\": 1,\"name\": \"POI\"},{\"code\": 2,\"name\": \"门票\"},{\"code\": 4,\"name\": \"跟团游\"},{\"code\": 8,\"name\": \"动态标签\"},{\"code\": 16,\"name\": \"景+酒\"}]",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "页号",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "页大小",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagVOListResp"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "标签工作台" ],
+        "summary" : "创建标签",
+        "description" : "json:{'name':'名称'}",
+        "operationId" : "createTag",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "tagVO",
+          "description" : "标签",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/TagVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagVOResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-tag/tag/business-scope" : {
+      "get" : {
+        "tags" : [ "标签工作台" ],
+        "summary" : "查看所有业务范围",
+        "description" : "key",
+        "operationId" : "getBusinessScope",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagBusinessScopeResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-tag/tag/type" : {
+      "get" : {
+        "tags" : [ "标签类别工作台" ],
+        "summary" : "查看标签类别",
+        "description" : "什么也不传返回全部",
+        "operationId" : "getCategoryTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "标签类别ID列表:1,2,3",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "标签名称模糊",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "nameEqual",
+          "in" : "query",
+          "description" : "标签名称等值",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "parentTypeId",
+          "in" : "query",
+          "description" : "父类别ID,0:获取所有一级类别",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "页号",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "count",
+          "in" : "query",
+          "description" : "页大小",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagTypeVOListResp"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "标签类别工作台" ],
+        "summary" : "创建标签类别",
+        "description" : "json:{'name':'名称'}",
+        "operationId" : "createTagType",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "tagTypeVO",
+          "description" : "标签类别",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/TagTypeVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TagTypeVOResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-tag/tag/type/{id}" : {
+      "put" : {
+        "tags" : [ "标签类别工作台" ],
+        "summary" : "更新标签类别，true表示更新成功,false表示失败",
+        "description" : "json:{'name':'名称'...}",
+        "operationId" : "updateTagType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "标签类别id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "json",
+          "description" : "标签类别更新字段",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BooleanResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-tag/tag/{id}" : {
+      "put" : {
+        "tags" : [ "标签工作台" ],
+        "summary" : "更新标签，true表示更新成功,false表示失败",
+        "description" : "json:{'name':'名称'...}",
+        "operationId" : "updateTag",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "标签id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "json",
+          "description" : "标签更新字段",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BooleanResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/tdc-menu" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "TDC票型菜单",
+        "description" : "",
+        "operationId" : "getTdcMenu",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TdcMenuResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-cate" : {
+      "post" : {
+        "tags" : [ "新票型" ],
+        "summary" : "创建物理票型",
+        "description" : "",
+        "operationId" : "addTicketCate",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "物理票型信息",
+          "description" : "json",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/物理票型"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketPoiResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-cate/{ticketCateId}" : {
+      "put" : {
+        "tags" : [ "新票型" ],
+        "summary" : "更新物理票型",
+        "description" : "",
+        "operationId" : "updateTicketCate",
+        "parameters" : [ {
+          "name" : "",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "物理票型信息",
+          "description" : "json",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/物理票型"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketPoiResp"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "新票型" ],
+        "summary" : "删除物理票型",
+        "description" : "",
+        "operationId" : "delTicketCate",
+        "parameters" : [ {
+          "name" : "",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-cate/{ticketCateId}/audit" : {
+      "put" : {
+        "tags" : [ "新票型" ],
+        "summary" : "审核物理票型",
+        "description" : "",
+        "operationId" : "auditTicketCate",
+        "parameters" : [ {
+          "name" : "物理票型ID",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-cate/{ticketCateId}/ticket-item" : {
+      "post" : {
+        "tags" : [ "新票型" ],
+        "summary" : "移动产品票型到物理票型",
+        "description" : "",
+        "operationId" : "associateTicketItemViaManual",
+        "parameters" : [ {
+          "name" : "物理票型ID",
+          "in" : "path",
+          "description" : "ticketCateId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "产品票型ID",
+          "in" : "query",
+          "description" : "ticketItemId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketItemListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-cate/{ticketCateId}/ticket-item/{ticketItemId}" : {
+      "delete" : {
+        "tags" : [ "新票型" ],
+        "summary" : "取消产品票型关联物理票型",
+        "description" : "",
+        "operationId" : "unassociateTicketItemViaManual",
+        "parameters" : [ {
+          "name" : "物理票型ID",
+          "in" : "path",
+          "description" : "ticketCateId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "产品票型ID",
+          "in" : "path",
+          "description" : "ticketItemId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketItemListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-city" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "查询城市(含新票型)信息列表",
+        "description" : "",
+        "operationId" : "findTicketCitys",
+        "parameters" : [ {
+          "name" : "供应商ID",
+          "in" : "query",
+          "description" : "partnerId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "省份ID",
+          "in" : "query",
+          "description" : "provinceLocationId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "第几页",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "每页条数",
+          "in" : "query",
+          "description" : "count",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketCityListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-item" : {
+      "post" : {
+        "tags" : [ "新票型" ],
+        "summary" : "创建产品票型(推送Deal)",
+        "description" : "",
+        "operationId" : "addTicketItemViaDeal",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Deal信息",
+          "description" : "json",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketItemListResp"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "新票型" ],
+        "summary" : "更新产品票型(推送Deal更新)",
+        "description" : "",
+        "operationId" : "updateTicketItemViaDeal",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Deal信息",
+          "description" : "json",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/TicketDealVO"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketItemListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-item/{ticketItemId}" : {
+      "put" : {
+        "tags" : [ "新票型" ],
+        "summary" : "创建产品票型(推送Deal)",
+        "description" : "",
+        "operationId" : "updateTicketItemViaDeal",
+        "parameters" : [ {
+          "name" : "产品票型ID",
+          "in" : "path",
+          "description" : "ticketItemId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketItemListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-item/{ticketItemId}/audit" : {
+      "put" : {
+        "tags" : [ "新票型" ],
+        "summary" : "审核产品票型",
+        "description" : "",
+        "operationId" : "auditTicketItem",
+        "parameters" : [ {
+          "name" : "产品票型ID",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/BoolResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-poi" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "查询POI(含新票型)信息列表",
+        "description" : "",
+        "operationId" : "findTicketPois",
+        "parameters" : [ {
+          "name" : "供应商ID",
+          "in" : "query",
+          "description" : "partnerId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "城市ID",
+          "in" : "query",
+          "description" : "cityLocationId",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "第几页",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "每页条数",
+          "in" : "query",
+          "description" : "count",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketPoiListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-poi/{mdcPoiId}/log" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "查询POI下票型日志",
+        "description" : "",
+        "operationId" : "findTicketLogs",
+        "parameters" : [ {
+          "name" : "",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketLogListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-poi/{poiId}" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "查询POI(含新票型)信息",
+        "description" : "",
+        "operationId" : "getTicketPoi",
+        "parameters" : [ {
+          "name" : "",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketPoiResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-province" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "查询省份(含新票型)信息列表",
+        "description" : "",
+        "operationId" : "findTicketProvinces",
+        "parameters" : [ {
+          "name" : "供应商ID",
+          "in" : "query",
+          "description" : "partnerId",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "第几页",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "每页条数",
+          "in" : "query",
+          "description" : "count",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketProvinceListResp"
+            }
+          }
+        }
+      }
+    },
+    "/tdc-ticket/v1/ticket-supplier" : {
+      "get" : {
+        "tags" : [ "新票型" ],
+        "summary" : "查询供应商(票型相关))信息列表",
+        "description" : "",
+        "operationId" : "findTicketSuppliers",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketSupplierListResp"
+            }
+          }
+        }
+      }
+    },
+    "/ticket/v1/ticket-type/id" : {
+      "get" : {
+        "tags" : [ "门票基本接口" ],
+        "summary" : "根据Deal和Partner查询票种ID",
+        "description" : "",
+        "operationId" : "findTicketTypeId",
+        "parameters" : [ {
+          "name" : "mtDealId",
+          "in" : "query",
+          "description" : "Deal ID",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "mtDealName",
+          "in" : "query",
+          "description" : "Deal 名字",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "partnerDealId",
+          "in" : "query",
+          "description" : "合作方 Deal ID",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "partnerDealName",
+          "in" : "query",
+          "description" : "合作方 Deal 名字",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "partnerId",
+          "in" : "query",
+          "description" : "合作方 ID",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "mdcPoiId",
+          "in" : "query",
+          "description" : "MDC POI ID数组",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TicketTypeIdListResp"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "AreaResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/AreaVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "AreaRespList" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/AreaVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "AreaVO" : {
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "区域id"
+        },
+        "destinationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "目的地Id"
+        },
+        "areaName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "区域名称"
+        },
+        "decInfo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "区域简介"
+        },
+        "isDel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否删除,0删除,1未删除"
+        },
+        "dataId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "区域信息在马蜂窝上的id"
+        },
+        "createTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "创建时间"
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "更新时间"
+        },
+        "lat" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地理经度"
+        },
+        "lng" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地理纬度"
+        },
+        "areaPath" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "区域画圈",
+          "items" : {
+            "$ref" : "#/definitions/areaPathPoint"
+          }
+        },
+        "modificationReason" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "修改原因"
+        },
+        "misAccount" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "修改人"
+        },
+        "adminOrderPercent" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "区域百分比"
+        },
+        "numHotels" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "酒店数量"
+        },
+        "areaImageUrl" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "图片URL"
+        },
+        "destinationName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "目的地名称"
+        },
+        "areaStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "编辑状态"
+        },
+        "destinationParentNameList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "目的地上级名称",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "hasPath" : {
+          "type" : "boolean",
+          "example" : "",
+          "description" : "是否已标注",
+          "default" : false
+        }
+      }
+    },
+    "AssessKpiSightVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "主键"
+        },
+        "owner" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "负责人"
+        },
+        "provinceLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "省份行政区id"
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "城市行政区id"
+        },
+        "placeStar" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景区星级"
+        },
+        "tripPoiName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景区名称"
+        },
+        "address" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景区地址"
+        },
+        "parentPoi" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "父子景区"
+        },
+        "createTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "创建时间"
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "修改时间"
+        },
+        "bestTimeFlag" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "最佳游玩时间标志位"
+        },
+        "bestTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "最佳游玩时间"
+        }
+      }
+    },
+    "AssessTripPoiResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/AssessKpiSightVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "AuditTripPoiInfoVO" : {
+      "properties" : {
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点来源：美团，导入"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点POI在TDC库中的id"
+        },
+        "mdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点POI在MDC的id"
+        },
+        "placeStar" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点等级"
+        },
+        "isCore" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点是否是核心：0:非核心,1:核心"
+        },
+        "info" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点简介"
+        },
+        "bestTripTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "最佳游玩时间"
+        },
+        "bestTripHour" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "建议游玩时长"
+        },
+        "isValid" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否有效（是否与其合作）0:不合作，1:合作"
+        },
+        "mdcPoiName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "mdc景点名称"
+        },
+        "typeId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "poi品类Id"
+        },
+        "typeName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "poi的品类"
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "所在城市的Id"
+        },
+        "placeCity" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "所在城市"
+        },
+        "locationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "所在行政区Id"
+        },
+        "locationName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "所在行政区"
+        },
+        "bareaId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "bareaId"
+        },
+        "bareaName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "bareaName"
+        },
+        "address" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点的地址"
+        },
+        "lat" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点的坐标，经度"
+        },
+        "lng" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点的坐标，纬度"
+        },
+        "phone" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "商家电话，用“/”隔开"
+        },
+        "openTime" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "openInfo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "开放时间"
+        },
+        "parentId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "父景点ID"
+        },
+        "parentName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "父景点名称"
+        },
+        "traffic" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "交通方式"
+        },
+        "frontImg" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "poiInfoDetailVOList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "景点POI的详细信息",
+          "items" : {
+            "$ref" : "#/definitions/PoiInfoDetailVO"
+          }
+        },
+        "isHasImg" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否是图文详情，0表示没有信息，1表示只有文字信息，大于1表示图文都有"
+        },
+        "poiTagRelationVOList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "poi标签列表",
+          "items" : {
+            "$ref" : "#/definitions/PoiTagRelationVO"
+          }
+        }
+      }
+    },
+    "AuditTripPoiResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/AuditTripPoiInfoVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "Authority" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "title" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "desc" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "BoolResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "BooleanResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "CategoryTagVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "标签id"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签名称"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签说明"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "标签分类"
+        },
+        "businessScope" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "业务范围:1:POI,2:门票,4:跟团游,8:动态标签,16:酒景"
+        },
+        "del" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "逻辑删除:0未删除,1已删除"
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "parentTagId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "父品类ID"
+        }
+      }
+    },
+    "CategoryTagVOListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/CategoryTagVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "ChildPoiInfoResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "object",
+          "example" : "",
+          "description" : "格式: {'$id' : [$id, $id, $id}, '$id': [$id, $id, $id]",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/Set"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "CityAllInfoVO" : {
+      "properties" : {
+        "cityId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "locationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "parentId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "pinyin" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "acronym" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "lat" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : ""
+        },
+        "lng" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : ""
+        },
+        "info" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "detailDesc" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "areaCode" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "rank" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "level" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "isOpen" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "isDel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "isOut" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "createTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "bestTripTime" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "banThing" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "speciaTips" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "suggestDay" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "adcode" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "regionName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "cityName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "provinceName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "CommonTagVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "标签id"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签名称"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签说明"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "标签分类"
+        },
+        "businessScope" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "业务范围:1:POI,2:门票,4:跟团游,8:动态标签,16:酒景"
+        },
+        "del" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "逻辑删除:0未删除,1已删除"
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "exclusiveType" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "专属品类"
+        }
+      }
+    },
+    "CommonTagVOListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/CommonTagVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "DestAreaSummary" : {
+      "properties" : {
+        "statusList" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/Status"
+          }
+        },
+        "areaVOList" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/AreaVO"
+          }
+        }
+      }
+    },
+    "DestinationAreaInfoSummary" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/DestAreaSummary"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "DestinationImageInfo" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "destinationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "imageUrl" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "imageType" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "isFront" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "imageName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "DestinationImageInfoResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/DestinationImageInfo"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "DestinationListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/DestinationVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "DestinationResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/DestinationVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "DestinationVO" : {
+      "required" : [ "destinationId" ],
+      "properties" : {
+        "destinationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "目的地Id"
+        },
+        "destinationName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "目的地名称"
+        },
+        "parentId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "上一级Id"
+        },
+        "level" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "目的地等级"
+        },
+        "parent" : {
+          "type" : "object",
+          "example" : "",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/DestinationVO"
+          }
+        },
+        "parentNameList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "所有上级目的地名称",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "decInfo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "目的地简介"
+        },
+        "isDel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否删除,0删除,1未删除"
+        },
+        "dataId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "目的地信息在马蜂窝上的id"
+        },
+        "createTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "创建时间"
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "更新时间"
+        },
+        "lat" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地理经度"
+        },
+        "lng" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地理纬度"
+        },
+        "destinationPath" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "目的地路径",
+          "items" : {
+            "$ref" : "#/definitions/List"
+          }
+        },
+        "hasPath" : {
+          "type" : "boolean",
+          "example" : "",
+          "description" : "是否已标注",
+          "default" : false
+        },
+        "locationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "locationId"
+        }
+      }
+    },
+    "FeeItemCreateVO" : {
+      "properties" : {
+        "sightid" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "feeitemName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "feeitemLimit" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "FeeItemUpdateVO" : {
+      "properties" : {
+        "sightid" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "feeitemId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "feeitemName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "isDel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "feeitemLimit" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "LineTravelShoppingCreateVO" : {
+      "properties" : {
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "shoppingName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "pinyin" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "acronym" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "cityName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "cityId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "areaName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "areaId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "soldContent" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "List" : {
+      "properties" : {
+        "empty" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        }
+      }
+    },
+    "Menu" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "title" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "url" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "code" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "sort" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "createTime" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "menus" : {
+          "example" : "",
+          "$ref" : "#/definitions/List"
+        }
+      }
+    },
+    "Page" : {
+      "properties" : {
+        "pageNo" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageSize" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalPageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "start" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "hasNextPage" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        },
+        "nextPage" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "hasPrePage" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        },
+        "prePage" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "ParentPoiInfoResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "object",
+          "example" : "",
+          "description" : "格式: {'$id' : [$id, $id, $id}, '$id': [$id, $id, $id]",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/Set"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "PoiAndCityData" : {
+      "properties" : {
+        "tripPoiInfoListVOs" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TripPoiInfoVO"
+          }
+        },
+        "cityAllInfoVOs" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/CityAllInfoVO"
+          }
+        }
+      }
+    },
+    "PoiAndCityDataRes" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/PoiAndCityData"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "PoiCategoryTagVO" : {
+      "properties" : {
+        "tagId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "period" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "PoiCommonTagVO" : {
+      "properties" : {
+        "tagId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "period" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "PoiInfoDetailVO" : {
+      "properties" : {
+        "num" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "POI详细介绍的序号"
+        },
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "0表示不是富文本格式，1表示是富文本格式"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "text表示是content字段是文本，img表示是图片"
+        },
+        "content" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "描述信息"
+        }
+      }
+    },
+    "PoiInfoVO" : {
+      "properties" : {
+        "openTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "营业时间"
+        },
+        "bestTripTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "最佳游玩时间"
+        },
+        "bestTripHour" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "建议游玩时长"
+        },
+        "info" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点简介"
+        },
+        "poiInfoDetailVOList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "景点详细介绍",
+          "items" : {
+            "$ref" : "#/definitions/PoiInfoDetailVO"
+          }
+        },
+        "traffic" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "交通信息"
+        },
+        "phoneList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "联系电话",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "PoiMergence" : {
+      "properties" : {
+        "masterTdcPoiId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "slaveTdcPoiIdList" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      }
+    },
+    "PoiTagRelationVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "表id"
+        },
+        "poiId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "mdc poi id"
+        },
+        "tagId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "标签id"
+        },
+        "tagName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签名称"
+        },
+        "period" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签有效月份"
+        },
+        "periodList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "标签有效月份",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "tagSource" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "标签来源(类型):0:品类,1:其他"
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "创建时间"
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "修改时间"
+        },
+        "isDel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否删除"
+        }
+      }
+    },
+    "PoiWhiteListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TripPoiWhiteVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "PoiWithsimilarOnes" : {
+      "properties" : {
+        "mtPoiInfo" : {
+          "example" : "",
+          "description" : "POI信息",
+          "$ref" : "#/definitions/AuditTripPoiInfoVO"
+        },
+        "analogousData" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "相似POI信息列表",
+          "items" : {
+            "$ref" : "#/definitions/AuditTripPoiInfoVO"
+          }
+        }
+      }
+    },
+    "PoiWithsimilarOnesResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/PoiWithsimilarOnes"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "ReplaceTripPoiVO" : {
+      "properties" : {
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "来源"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点POI在TDC库中的id"
+        },
+        "mdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点POI在MDC的id"
+        },
+        "placeStar" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点等级"
+        },
+        "isCore" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点是否是核心：0:非核心,1:核心"
+        },
+        "info" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点简介"
+        },
+        "bestTripTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "最佳游玩时间"
+        },
+        "bestTripHour" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "建议游玩时长"
+        },
+        "isValid" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否有效（是否与其合作）0:不合作，1:合作"
+        },
+        "mdcPoiName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "mdc景点名称"
+        },
+        "typeId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "poi品类Id"
+        },
+        "typeName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "poi的品类"
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "所在城市的Id"
+        },
+        "placeCity" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "所在城市"
+        },
+        "locationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "所在行政区Id"
+        },
+        "locationName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "所在行政区"
+        },
+        "bareaId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "bareaId"
+        },
+        "bareaName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "bareaName"
+        },
+        "address" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点的地址"
+        },
+        "lat" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点的坐标，经度"
+        },
+        "lng" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点的坐标，纬度"
+        },
+        "phone" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "商家电话，用“/”隔开"
+        },
+        "openTime" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "openInfo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "开放时间"
+        },
+        "parentId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "父景点ID"
+        },
+        "parentName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "父景点名称"
+        },
+        "traffic" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "交通方式"
+        },
+        "frontImg" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "poiInfoDetailVOList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "景点POI的详细信息",
+          "items" : {
+            "$ref" : "#/definitions/PoiInfoDetailVO"
+          }
+        },
+        "isHasImg" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否是图文详情，0表示没有信息，1表示只有文字信息，大于1表示图文都有"
+        },
+        "poiTagRelationVOList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "poi标签列表",
+          "items" : {
+            "$ref" : "#/definitions/PoiTagRelationVO"
+          }
+        },
+        "syncedWithMdc" : {
+          "type" : "boolean",
+          "example" : "",
+          "description" : "创建时MDC是否有对应的POI，商户创建poi时值为false",
+          "default" : false
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "操作人id"
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "操作人name"
+        },
+        "similarIds" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "其他景点poi的id"
+        }
+      }
+    },
+    "Role" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "Set" : {
+      "properties" : {
+        "empty" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        }
+      }
+    },
+    "Status" : {
+      "properties" : {
+        "areaStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "status" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "Supplier" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "TagBusinessScopeResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TagBusinessScopeVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TagBusinessScopeVO" : {
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "TagTypeVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "标签分类id"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "分类名称"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "分类说明"
+        },
+        "parentTypeId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "父级分类id"
+        },
+        "parentTypeName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "父级分类名称"
+        },
+        "countLimit" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "标签数量限制"
+        },
+        "del" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "逻辑删除:0未删除,1已删除"
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        }
+      }
+    },
+    "TagTypeVOListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TagTypeVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TagTypeVOResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/TagTypeVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TagVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "标签id"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签名称"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签说明"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "标签分类"
+        },
+        "typeName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "标签分类名称"
+        },
+        "businessScope" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "业务范围:1:POI,2:门票,4:跟团游,8:动态标签,16:酒景"
+        },
+        "businessScopeList" : {
+          "type" : "array",
+          "example" : "",
+          "description" : "业务范围列表",
+          "items" : {
+            "$ref" : "#/definitions/TagBusinessScopeVO"
+          }
+        },
+        "del" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "逻辑删除:0未删除,1已删除"
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "parentTagId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "父品类ID"
+        },
+        "parentTagName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "父品类名称"
+        },
+        "exclusiveType" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "专属品类"
+        },
+        "exclusiveTypeName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "专属品类名称"
+        }
+      }
+    },
+    "TagVOListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TagVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TagVOResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/TagVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TdcMenu" : {
+      "properties" : {
+        "sysName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "env" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "menuList" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/Menu"
+          }
+        },
+        "roleList" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/UserRole"
+          }
+        },
+        "authority" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/Authority"
+          }
+        }
+      }
+    },
+    "TdcMenuResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/TdcMenu"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketCityListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TicketCityVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketCityVO" : {
+      "properties" : {
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "notAuditedTicketItemCount" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        }
+      }
+    },
+    "TicketCreateVO" : {
+      "properties" : {
+        "sightAndFeeItem" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "peopleType" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "description" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "description2" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "TicketDealVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "mtDealName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "mtDealId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "partnerDealName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "partnerDealId" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "partnerId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "poiIdList" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      }
+    },
+    "TicketItemListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/产品票型"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketLogListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TicketLogVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketLogVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "levelTypeLiteral" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "contentLiteral" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "nameLiteral" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "opType" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "ticketItemId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "ticketCateId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "beforeName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "afterName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "beforeAuditStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "afterAuditStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "dealId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "poiId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "beforeData" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "afterData" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        }
+      }
+    },
+    "TicketPoiListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TicketPoiVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketPoiOnChildVO" : {
+      "properties" : {
+        "poiId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "notAuditedTicketItemCount" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "ticketCates" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/物理票型"
+          }
+        },
+        "ticketItems" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/产品票型"
+          }
+        }
+      }
+    },
+    "TicketPoiResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/TicketPoiVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketPoiVO" : {
+      "properties" : {
+        "poiId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "notAuditedTicketItemCount" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "ticketCates" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/物理票型"
+          }
+        },
+        "ticketItems" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/产品票型"
+          }
+        }
+      }
+    },
+    "TicketProvinceListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TicketProvinceVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketProvinceVO" : {
+      "properties" : {
+        "provinceLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "notAuditedTicketItemCount" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        }
+      }
+    },
+    "TicketStockPrice" : {
+      "properties" : {
+        "date" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "stock" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "stockMode" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "mtPrice" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "marketPrice" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "settlement" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketSummary" : {
+      "properties" : {
+        "date" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "lowestMtPrice" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "lowestMarketPrice" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "hasRemain" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        },
+        "settlement" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketSupplierListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/Supplier"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketTypeIdListResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TicketUpdateVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "sightAndFeeItem" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "peopleType" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "description" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "description2" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoi4AuditResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/AuditTripPoiInfoVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoiBoolResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "boolean",
+          "example" : "",
+          "default" : false
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoiFullInfoResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TripPoiFullInfoVO"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoiFullInfoVO" : {
+      "properties" : {
+        "categoryTag" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/PoiCategoryTagVO"
+          }
+        },
+        "commonTag" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/PoiCommonTagVO"
+          }
+        },
+        "tdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "tdcPoiId"
+        },
+        "source" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "数据来源（1-去哪）"
+        },
+        "sourceId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "该数据在来源方对应的景点id"
+        },
+        "placeStar" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点等级"
+        },
+        "openTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点开放时间"
+        },
+        "marketPrice" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "市场价钱"
+        },
+        "detailDesc" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "景点详细信息（富文本格式）"
+        },
+        "isdel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否删除,0表示未删除，1表示删除"
+        },
+        "gmtCreated" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "创建时间"
+        },
+        "gmtModified" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "修改时间"
+        },
+        "mdcCreateTime" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点库在mdc的创建时间"
+        },
+        "bestTripTime" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "最佳旅游时间"
+        },
+        "bestTripHour" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "建议游玩时长"
+        },
+        "checkStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点状态，0:未校准,1:已校准,2:放弃"
+        },
+        "isCore" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "景点类型，0:非核心,1:核心"
+        },
+        "isValid" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否有效（是否与其合作）0:不合作，1:合作"
+        },
+        "info" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "简介"
+        },
+        "parenId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "父POI的ID"
+        },
+        "traffic" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "交通"
+        },
+        "showStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "mdcPoiName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "美团POI name"
+        },
+        "brandId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "品牌ID"
+        },
+        "brandName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "品牌名称"
+        },
+        "typeId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "品类ID"
+        },
+        "typeName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "品类名称"
+        },
+        "bareaId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "商圈ID"
+        },
+        "accurateResult" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "MDC校准状态，0:未校准,1:已校准,2:放弃"
+        },
+        "poiType" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "POI类型 0正常 1非门店"
+        },
+        "lat" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "纬度"
+        },
+        "lng" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "经度"
+        },
+        "address" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地址"
+        },
+        "phone" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "电话"
+        },
+        "subwayIds" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地铁站ID"
+        },
+        "poiSubways" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "附近地铁信息"
+        },
+        "parkingInfo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "停车位信息"
+        },
+        "wifi" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否有wifi，0代表无或者未知 1代表有"
+        },
+        "landmarkIds" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地标ID"
+        },
+        "poiLandmarks" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "附近地标信息"
+        },
+        "introduction" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "门店介绍"
+        },
+        "closeStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "运营状态（0：正常运营；1：倒闭）"
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "城市编码（国标）"
+        },
+        "bareaName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "商圈名称"
+        },
+        "openInfo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "营业时间"
+        },
+        "cityId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "城市id"
+        },
+        "locationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "行政区ID"
+        },
+        "style" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "门店风格,逗号分隔,对应mdc的poiStyle"
+        },
+        "scoreSource" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "0:ugc计算,1:酒店,2:旅游"
+        },
+        "scoreRatio" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : "",
+          "description" : "同行评价比率,对应mdc的scoreRank"
+        },
+        "markNumbers" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "6个月评价人数,对应mdc的allCommentNum"
+        },
+        "latestWeekCoupon" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "最近七天验券数"
+        },
+        "isHot" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "热门商家,0:否,1:是,对应mdc的hotMerchant"
+        },
+        "historyCouponCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "历史验券数"
+        },
+        "frontImg" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "poi首图"
+        },
+        "avgScore" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : "",
+          "description" : "半年内平均打分"
+        },
+        "avgPrice" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : "",
+          "description" : "人均单价,对应mdc的pricePerson"
+        },
+        "brandStory" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "品牌故事"
+        },
+        "brandLogo" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "品牌LOGO,对应mdc的logoUrl"
+        },
+        "tag" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "mdc的poiTags"
+        },
+        "extraAttrs" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "POI各品类扩展信息"
+        },
+        "featureMenus" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "特色菜"
+        },
+        "mdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "关联的mdc_poi_id"
+        },
+        "mergeId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "主门店ID"
+        }
+      }
+    },
+    "TripPoiImgResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoiInfoResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/PoiInfoVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoiInfoVO" : {
+      "properties" : {
+        "tdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "mtPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "mdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "mdcPoiName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "placeCity" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "cityName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "placeStar" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "checkStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "editOp" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "parentId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "parentName" : {
+          "type" : "string",
+          "example" : ""
+        }
+      }
+    },
+    "TripPoiWhiteVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "mdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "isWhite" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "userName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "insertTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        }
+      }
+    },
+    "UserRole" : {
+      "properties" : {
+        "userId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "roles" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/Role"
+          }
+        }
+      }
+    },
+    "VocabularyPoiVO" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : "",
+          "description" : "主键"
+        },
+        "mdcPoiId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "mdcPoiId"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "mdcPoiId"
+        },
+        "categoryId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "二级品类id"
+        },
+        "categoryName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "二级品类名称"
+        },
+        "isOnline" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "是否在线，0表示不在线，大于0表示在线"
+        },
+        "synonyms" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "同义词"
+        },
+        "provinceLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "省ID"
+        },
+        "provinceName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "省名"
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "城市ID"
+        },
+        "cityName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "城市名"
+        },
+        "areaLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "",
+          "description" : "区域id"
+        },
+        "areaName" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "区域名称"
+        },
+        "updateTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "",
+          "description" : "修改时间"
+        }
+      }
+    },
+    "VocabularyPoiVOResp" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "example" : "",
+          "$ref" : "#/definitions/VocabularyPoiVO"
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "WebResponse" : {
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "data" : {
+          "type" : "object",
+          "example" : ""
+        },
+        "domain" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "message" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "page" : {
+          "example" : "",
+          "$ref" : "#/definitions/Page"
+        },
+        "getiTotalDisplayRecords" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "pageCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "totalCount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        }
+      }
+    },
+    "areaPathPoint" : {
+      "properties" : {
+        "lng" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地理经度"
+        },
+        "lat" : {
+          "type" : "string",
+          "example" : "",
+          "description" : "地理纬度"
+        }
+      }
+    },
+    "产品票型" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "mtDealName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "mtDealId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "auditStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "partnerDealName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "partnerDealId" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "partnerId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "partnerName" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "cityLocationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "locationId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "ticketCate" : {
+          "example" : "",
+          "$ref" : "#/definitions/TicketSummary"
+        },
+        "createTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "modifyTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "ticketSummary" : {
+          "example" : "",
+          "$ref" : "#/definitions/TicketSummary"
+        },
+        "stockPrices" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/TicketStockPrice"
+          }
+        }
+      }
+    },
+    "物理票型" : {
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : ""
+        },
+        "auditStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : ""
+        },
+        "name" : {
+          "type" : "string",
+          "example" : ""
+        },
+        "poi" : {
+          "example" : "",
+          "$ref" : "#/definitions/TicketPoiOnChildVO"
+        },
+        "ticketItems" : {
+          "type" : "array",
+          "example" : "",
+          "items" : {
+            "$ref" : "#/definitions/产品票型"
+          }
+        },
+        "createTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        },
+        "modifyTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : ""
+        }
+      }
+    }
+  }
+}

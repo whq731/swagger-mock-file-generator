@@ -16,7 +16,9 @@
     "chancejs"
   ],
   "dependencies": {
+    "async": "^2.0.0-rc.6",
     "babel-polyfill": "^6.9.1",
+    "lodash": "^4.13.1",
     "swagger-mock-parser": "^1.0.6",
     "swagger-parser": "^3.4.1"
   },
