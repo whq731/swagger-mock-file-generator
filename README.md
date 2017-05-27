@@ -1,7 +1,7 @@
 # swagger-mock-file-generator
 A generator of mock file base on swagger yaml or JSON,output swagger with mock data JSON file.
 
-The mock data is filled in ````responses.[code].schema.example````
+The mock data will pour into  ````responses.[code].schema.example````,if your original swagger file has already defined example,it will not change
 Spec: [here](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#fixed-fields-13)
 ##Install
 ````jacascript

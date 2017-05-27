@@ -27,7 +27,7 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
     if (!swaggerFile) {
         throw new Error('missing swagger file path');
     }
-    var parser = new _swaggerMockParser2['default']();
+    var parser = new _swaggerMockParser2['default']({ useExample: true });
     var parserPromise = new Promise(function (resolve) {
         _swaggerParser2['default'].dereference(swaggerFile, function (err, swagger) {
             if (err) throw err;

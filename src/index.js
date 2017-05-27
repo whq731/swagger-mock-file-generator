@@ -9,7 +9,7 @@ export default function(swaggerFile, mockFile, cb) {
     if (!swaggerFile) {
         throw new Error('missing swagger file path');
     }
-    let parser = new mockParser();
+    let parser = new mockParser({useExample: true});
     let parserPromise = new Promise((resolve) => {
             swaggerParser.dereference(swaggerFile, (err, swagger) => {
             if (err) throw err;
