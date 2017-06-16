@@ -32,7 +32,7 @@ export default function(swaggerFile, mockFile, cb) {
                                         if (paths[path][action].responses[resCode].schema.example && paths[path][action].responses[resCode].schema.example !== '') {
                                             continue;
                                         } else {
-                                            paths[path][action].responses[resCode].schema.example = parser.parse(paths[path][action].responses[resCode].schema)
+                                            paths[path][action].responses[resCode].schema.example = setImmediate(()=>{parser.parse(paths[path][action].responses[resCode].schema)})
                                         }
                                     }
                                 }
@@ -43,10 +43,22 @@ export default function(swaggerFile, mockFile, cb) {
                 }
             }
         };
-        fs.writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, null, 2), 'utf-8', (err) => {
+        let cache = [];
+        fs.writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, function(key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.indexOf(value) !== -1) {
+                    // Circular reference found, discard key
+                    return;
+                }
+                // Store value in our collection
+                cache.push(value);
+            }
+            return value;
+        }, 2), 'utf-8', (err) => {
             if (err) throw err;
             if (cb) cb();
-    });
+        });
+        cache = null;
     } catch (e) {
         console.log(e)
     }
