@@ -18,7 +18,7 @@ var _swaggerMockParser = require('swagger-mock-parser');
 
 var _swaggerMockParser2 = _interopRequireDefault(_swaggerMockParser);
 
-// babel-polyfill can only be imported once
+// babel-polyfill only can be imported once
 if (!global._babelPolyfill) {
     require('babel-polyfill');
 }
@@ -34,48 +34,44 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
             resolve(swagger);
         });
     });
-
     parserPromise.then(function (api) {
         var paths = api.paths;
         try {
             (function () {
-                var _loop = function (path) {
+                for (var path in paths) {
                     if (paths.hasOwnProperty(path)) {
-                        var _loop2 = function (action) {
+                        for (var action in paths[path]) {
                             if (paths[path].hasOwnProperty(action)) {
                                 if (paths[path][action].responses) {
-                                    var _loop3 = function (resCode) {
-                                        if (paths[path][action].responses.hasOwnProperty(resCode)) {
-                                            if (paths[path][action].responses[resCode].schema) {
-                                                // if example is defined and not empty,on override just skip it
-                                                if (paths[path][action].responses[resCode].schema.example && paths[path][action].responses[resCode].schema.example !== '') {
-                                                    return 'continue';
-                                                } else {
-                                                    paths[path][action].responses[resCode].schema.example = setImmediate(function () {
-                                                        parser.parse(paths[path][action].responses[resCode].schema);
-                                                    });
-                                                }
-                                            }
-                                        }
-                                    };
-
                                     for (var resCode in paths[path][action].responses) {
-                                        var _ret4 = _loop3(resCode);
+                                        if (paths[path][action].responses.hasOwnProperty(resCode)) {
+                                            var _ret2 = (function () {
+                                                var schema = paths[path][action].responses[resCode].schema;
+                                                if (schema) {
+                                                    // if example is defined and not empty,on override just skip it
+                                                    if (schema.example && schema.example !== '') {
+                                                        return 'continue';
+                                                    } else {
+                                                        // if current schema don't have 'properties', return null object
+                                                        schema.example = {};
+                                                        if (schema.hasOwnProperty('properties')) {
+                                                            Object.keys(schema['properties']).forEach(function (key) {
+                                                                schema.example[key] = parser.parse(schema['properties'][key]);
+                                                            });
+                                                        } else {
+                                                            schema.example = parser.parse(schema);
+                                                        }
+                                                    }
+                                                }
+                                            })();
 
-                                        if (_ret4 === 'continue') continue;
+                                            if (_ret2 === 'continue') continue;
+                                        }
                                     }
                                 }
                             }
-                        };
-
-                        for (var action in paths[path]) {
-                            _loop2(action);
                         }
                     }
-                };
-
-                for (var path in paths) {
-                    _loop(path);
                 };
                 var cache = [];
                 _fs2['default'].writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, function (key, value) {

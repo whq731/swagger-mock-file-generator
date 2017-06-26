@@ -1,7 +1,7 @@
 import fs from 'fs';
 import swaggerParser from 'swagger-parser';
 import mockParser from 'swagger-mock-parser';
-// babel-polyfill can only be imported once
+// babel-polyfill only can be imported once
 if (!global._babelPolyfill) {
     require('babel-polyfill');
 }
@@ -15,8 +15,7 @@ export default function(swaggerFile, mockFile, cb) {
             if (err) throw err;
             resolve(swagger);
         });
-});
-
+    });
     parserPromise.then((api) => {
         let paths = api.paths;
     try {
@@ -27,18 +26,26 @@ export default function(swaggerFile, mockFile, cb) {
                         if (paths[path][action].responses) {
                             for (let resCode in paths[path][action].responses) {
                                 if (paths[path][action].responses.hasOwnProperty(resCode)) {
-                                    if (paths[path][action].responses[resCode].schema) {
+                                    let schema = paths[path][action].responses[resCode].schema;
+                                    if (schema) {
                                         // if example is defined and not empty,on override just skip it
-                                        if (paths[path][action].responses[resCode].schema.example && paths[path][action].responses[resCode].schema.example !== '') {
+                                        if (schema.example && schema.example !== '') {
                                             continue;
                                         } else {
-                                            paths[path][action].responses[resCode].schema.example = setImmediate(()=>{parser.parse(paths[path][action].responses[resCode].schema)})
+                                            // if current schema don't have 'properties', return null object
+                                            schema.example  = {};
+                                            if(schema.hasOwnProperty('properties')){
+                                                Object.keys(schema['properties']).forEach((key) => {
+                                                    schema.example[key] = parser.parse(schema['properties'][key])
+                                                })
+                                            } else {
+                                                schema.example = parser.parse(schema);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-
                     }
                 }
             }
