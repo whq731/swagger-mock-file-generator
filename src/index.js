@@ -9,7 +9,6 @@ export default function(swaggerFile, mockFile, cb) {
     if (!swaggerFile) {
         throw new Error('missing swagger file path');
     }
-    let parser = new mockParser({useExample: true});
     let parserPromise = new Promise((resolve) => {
             swaggerParser.dereference(swaggerFile, (err, swagger) => {
             if (err) throw err;
@@ -32,15 +31,7 @@ export default function(swaggerFile, mockFile, cb) {
                                         if (schema.example && schema.example !== '') {
                                             continue;
                                         } else {
-                                            // if current schema don't have 'properties', return null object
-                                            schema.example  = {};
-                                            if(schema.hasOwnProperty('properties')){
-                                                Object.keys(schema['properties']).forEach((key) => {
-                                                    schema.example[key] = parser.parse(schema['properties'][key])
-                                                })
-                                            } else {
-                                                schema.example = parser.parse(schema);
-                                            }
+                                            schema.example = new mockParser({useExample: true, fixedArray: true}).parse(schema);
                                         }
                                     }
                                 }

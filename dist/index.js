@@ -27,7 +27,6 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
     if (!swaggerFile) {
         throw new Error('missing swagger file path');
     }
-    var parser = new _swaggerMockParser2['default']({ useExample: true });
     var parserPromise = new Promise(function (resolve) {
         _swaggerParser2['default'].dereference(swaggerFile, function (err, swagger) {
             if (err) throw err;
@@ -45,27 +44,15 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
                                 if (paths[path][action].responses) {
                                     for (var resCode in paths[path][action].responses) {
                                         if (paths[path][action].responses.hasOwnProperty(resCode)) {
-                                            var _ret2 = (function () {
-                                                var schema = paths[path][action].responses[resCode].schema;
-                                                if (schema) {
-                                                    // if example is defined and not empty,on override just skip it
-                                                    if (schema.example && schema.example !== '') {
-                                                        return 'continue';
-                                                    } else {
-                                                        // if current schema don't have 'properties', return null object
-                                                        schema.example = {};
-                                                        if (schema.hasOwnProperty('properties')) {
-                                                            Object.keys(schema['properties']).forEach(function (key) {
-                                                                schema.example[key] = parser.parse(schema['properties'][key]);
-                                                            });
-                                                        } else {
-                                                            schema.example = parser.parse(schema);
-                                                        }
-                                                    }
+                                            var schema = paths[path][action].responses[resCode].schema;
+                                            if (schema) {
+                                                // if example is defined and not empty,on override just skip it
+                                                if (schema.example && schema.example !== '') {
+                                                    continue;
+                                                } else {
+                                                    schema.example = new _swaggerMockParser2['default']({ useExample: true, fixedArray: true }).parse(schema);
                                                 }
-                                            })();
-
-                                            if (_ret2 === 'continue') continue;
+                                            }
                                         }
                                     }
                                 }
