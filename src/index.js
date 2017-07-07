@@ -1,5 +1,5 @@
 import fs from 'fs';
-import swaggerParser from 'swagger-parser';
+import swaggerParser from 'swagger-jsblade-swagger-parser';
 import mockParser from 'swagger-mock-parser';
 // babel-polyfill only can be imported once
 if (!global._babelPolyfill) {
