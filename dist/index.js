@@ -18,6 +18,10 @@ var _swaggerMockParser = require('swagger-mock-parser');
 
 var _swaggerMockParser2 = _interopRequireDefault(_swaggerMockParser);
 
+var _circularJson = require('circular-json');
+
+var _circularJson2 = _interopRequireDefault(_circularJson);
+
 // babel-polyfill only can be imported once
 if (!global._babelPolyfill) {
     require('babel-polyfill');
@@ -64,8 +68,8 @@ exports['default'] = function (swaggerFile, mockFile, cb) {
                 _fs2['default'].writeFile(mockFile || 'swaggerWithMock.json', JSON.stringify(api, function (key, value) {
                     if (typeof value === 'object' && value !== null) {
                         if (cache.indexOf(value) !== -1) {
-                            // Circular reference found, discard key
-                            return;
+                            // Circular reference found, use circularJson.stringify to break
+                            return JSON.parse(_circularJson2['default'].stringify(value));
                         }
                         // Store value in our collection
                         cache.push(value);
